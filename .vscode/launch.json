@@ -1,0 +1,15 @@
+{
+  "configurations": [
+    {
+      "name": "Run script: dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "bun run dev",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**",
+        "!**/.next/**"
+      ]
+    }
+  ]
+}

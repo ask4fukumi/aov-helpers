@@ -2,6 +2,7 @@
   "name": "aov-helpers",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,18 +10,29 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.0.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.394.0",
+    "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.4"
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "@typescript-eslint/parser": "^7.13.0",
     "eslint": "^8",
-    "eslint-config-next": "14.2.4"
+    "eslint-config-next": "14.2.4",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "postcss": "^8",
+    "prettier": "^3.3.2",
+    "prettier-eslint": "^16.3.0",
+    "prettier-plugin-tailwindcss": "^0.6.4",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.4.5"
   }
 }

@@ -1,0 +1,4 @@
+{
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "path-intellisense.absolutePathTo": "${workspaceFolder}/public"
+}

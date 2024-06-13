@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "bun",
+      "script": "bun run start",
+      "problemMatcher": [],
+      "label": "bun: start",
+      "detail": "Bun run script: start",
+      "dependsOn": [
+        "bun: build"
+      ]
+    },
+    {
+      "type": "bun",
+      "script": "bun run build",
+      "problemMatcher": [],
+      "label": "bun: build",
+      "detail": "Bun run script: build"
+    },
+    {
+      "type": "shell",
+      "command": "ngrok tcp 3000",
+      "label": "ngrok: tpc",
+      "detail": "Ngrok tcp tunnel",
+      "problemMatcher": []
+    },
+    {
+      "type": "shell",
+      "command": "ngrok http 3000",
+      "label": "ngrok: http",
+      "detail": "Ngrok http tunnel",
+      "problemMatcher": []
+    }
+  ]
+}
