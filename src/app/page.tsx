@@ -1,113 +1,244 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+import { Label } from "@radix-ui/react-label"
+import type { NextPage } from "next"
+import { list } from "radash"
+import { createContext, useContext, useId, useState } from "react"
+import { Button } from "src/libs/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "src/libs/components/ui/card"
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "src/libs/components/ui/dialog"
+import { Input } from "src/libs/components/ui/input"
+import { ScrollArea } from "src/libs/components/ui/scroll-area"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "src/libs/components/ui/table"
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+const defaultMathValues = {
+  cd: 0,
+  cd_: 0,
+  cc: 0,
+  cc_: 0,
+  ccm: 0,
 }
+
+type UseState<S> = [S, React.Dispatch<React.SetStateAction<S>>]
+
+const MathContext = createContext<UseState<typeof defaultMathValues> | null>(
+  null,
+)
+
+const MathProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const mathState = useState(defaultMathValues)
+
+  return (
+    <MathContext.Provider value={mathState}>{children}</MathContext.Provider>
+  )
+}
+
+const InputField: React.FC<{
+  label: {
+    title: string
+    description?: React.ReactNode
+  }
+
+  variable: keyof typeof defaultMathValues
+}> = ({ label, variable }) => {
+  const id = useId()
+  const mathState = useContext(MathContext)
+
+  return (
+    <div className="flex items-start justify-between">
+      <Label className="flex flex-col" htmlFor={id}>
+        <div>{label.title}</div>
+        {!!label.description && (
+          <div className="text-sm text-zinc-500">{label.description}</div>
+        )}
+      </Label>
+      <Input
+        id={id}
+        onChange={(e) => {
+          if (!mathState) return
+          mathState[1]((prev) => ({
+            ...prev,
+            [variable]: e.target.valueAsNumber,
+          }))
+        }}
+        className="w-[12ch] md:w-[20ch]"
+        type="number"
+      ></Input>
+    </div>
+  )
+}
+
+const calculateResult = (mathValues?: typeof defaultMathValues) => {
+  const { cd, cd_, cc, cc_, ccm } = mathValues ?? defaultMathValues
+
+  const C = cc_ + (1 + ccm) * (0.07 + cc)
+  const D = 1.36 + cd + cd_
+
+  return Math.max(
+    Math.min(
+      10,
+      Math.round(
+        -(D * (1 + ccm) * 0.009 - 0.036 * C) / (-6.48 * Math.pow(10, -4)),
+      ),
+    ),
+    0,
+  )
+}
+
+const calculateF = (x: number, mathValues?: typeof defaultMathValues) => {
+  const { cd, cd_, cc, cc_, ccm } = mathValues ?? defaultMathValues
+
+  const C = cc_ + (1 + ccm) * (0.07 + cc)
+  const D = 1.36 + cd + cd_
+
+  return (
+    -3.24 * Math.pow(10, -4) * Math.pow(x, 2)
+    + (D * (1 + ccm) * 0.009 - 0.036 * C) * x
+    + cd
+    + 1
+  )
+}
+
+const calculateF_ = (x: number, mathValues?: typeof defaultMathValues) => {
+  const { cd, cd_, cc, cc_, ccm } = mathValues ?? defaultMathValues
+
+  const C = cc_ + (1 + ccm) * (0.07 + cc)
+  const D = 1.36 + cd + cd_
+
+  return -6.48 * Math.pow(10, -4) * x + (D * (1 + ccm) * 0.009 - 0.036 * C)
+}
+
+const CalculateButton: React.FC = () => {
+  const mathState = useContext(MathContext)
+
+  const x = calculateResult(mathState?.[0])
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="w-full">Tính</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <div className="">
+          <div className="mb-1">
+            Bạn cần{" "}
+            <span className="inline-flex w-[3ch] justify-center text-lg font-bold tabular-nums">
+              {x}
+            </span>
+            {" viên "}
+            <span className="underline">Tỉ lệ Chí mạng</span>
+          </div>
+          <div className="">
+            Bạn cần{" "}
+            <span className="inline-flex w-[3ch] justify-center text-lg font-bold tabular-nums">
+              {10 - x}
+            </span>
+            {" viên "}
+            <span className="underline">Sát thương Chí mạng</span>
+          </div>
+        </div>
+        <ScrollArea className="max-h-[60dvh] w-full">
+          <Table>
+            <TableHeader className="border-red sticky top-0 bg-background">
+              <TableRow className="">
+                <TableHead>x</TableHead>
+                <TableHead>f</TableHead>
+                <TableHead>{"f'"}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {list(0, 10).map((i) => (
+                <TableRow key={i}>
+                  <TableCell>{i}</TableCell>
+                  <TableCell>
+                    {calculateF(i, mathState?.[0]).toFixed(7)}
+                  </TableCell>
+                  <TableCell>
+                    {calculateF_(i, mathState?.[0]).toFixed(7)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+const HomePage: NextPage = () => {
+  return (
+    <MathProvider>
+      <main className="flex h-dvh w-dvw items-center justify-center">
+        <Card className="m-10 h-fit w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Nhập số liệu</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-y-4">
+            <InputField
+              label={{
+                title: "Tỉ lệ chí mạng",
+                description: "Có được từ trang bị",
+              }}
+              variable="cc"
+            />
+            <InputField
+              label={{
+                title: "Tỉ lệ chí mạng",
+                description: "Có được từ nội tại",
+              }}
+              variable="cc_"
+            />
+            <InputField
+              label={{
+                title: "Sát thương chí mạng",
+                description: "Có được từ trang bị",
+              }}
+              variable="cd"
+            />
+            <InputField
+              label={{
+                title: "Sát thương chí mạng",
+                description: "Có được từ nội tại",
+              }}
+              variable="cd_"
+            />
+            <InputField
+              label={{
+                title: "Số nhân TLCM",
+                description: (
+                  <span>
+                    Có được từ phù hiệu <br /> (0 hoặc 0.16)
+                  </span>
+                ),
+              }}
+              variable="ccm"
+            />
+          </CardContent>
+          <CardFooter>
+            <CalculateButton />
+          </CardFooter>
+        </Card>
+      </main>
+    </MathProvider>
+  )
+}
+
+export default HomePage

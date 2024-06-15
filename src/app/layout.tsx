@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <html lang="vi">
-      <body className={inter.className}>{children}</body>
+      <body className={`dark h-dvh ${inter.className}`}>{children}</body>
     </html>
   )
 }
