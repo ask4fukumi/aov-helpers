@@ -22,6 +22,7 @@ import { ScrollArea } from "src/libs/components/ui/scroll-area"
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -140,22 +141,28 @@ const CalculateButton: React.FC = () => {
           <div className="mb-1">
             Bạn cần{" "}
             <span className="inline-flex w-[3ch] justify-center text-lg font-bold tabular-nums">
-              {x}
-            </span>
-            {" viên "}
-            <span className="underline">Tỉ lệ Chí mạng</span>
-          </div>
-          <div className="">
-            Bạn cần{" "}
-            <span className="inline-flex w-[3ch] justify-center text-lg font-bold tabular-nums">
               {10 - x}
             </span>
             {" viên "}
             <span className="underline">Sát thương Chí mạng</span>
           </div>
+          <div className="">
+            Bạn cần{" "}
+            <span className="inline-flex w-[3ch] justify-center text-lg font-bold tabular-nums">
+              {x}
+            </span>
+            {" viên "}
+            <span className="underline">Tỉ lệ Chí mạng</span>
+          </div>
         </div>
         <ScrollArea className="max-h-[60dvh] w-full">
           <Table>
+            <TableCaption className="px-4 text-left">
+              x là số viên ngọc Tỉ lệ Chí mạng.
+              <br />f là khả năng gây sát thương (càng cao càng tốt).
+              <br />
+              {"f' là đạo hàm của f (f là một hàm parabol)."}
+            </TableCaption>
             <TableHeader className="border-red sticky top-0 bg-background">
               <TableRow className="">
                 <TableHead>x</TableHead>
