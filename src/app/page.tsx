@@ -8,6 +8,7 @@ import { Button } from "src/libs/components/ui/button"
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -86,33 +87,34 @@ const InputField: React.FC<{
   )
 }
 
-const calculateResult = (mathValues?: typeof defaultMathValues) => {
+const getMathProps = (mathValues?: typeof defaultMathValues) => {
   const { cd, cd_, cc, cc_, ccm } = mathValues ?? defaultMathValues
 
-  const C = cc_ + (1 + ccm) * (0.07 + cc)
+  const C = cc_ + (1 + ccm) * cc + 0.07
   const D = 1.36 + cd + cd_
+
+  return { C, D, cd, cd_, cc, cc_, ccm }
+}
+
+const calculateResult = (mathValues?: typeof defaultMathValues) => {
+  const { C, D, ccm } = getMathProps(mathValues)
 
   return Math.max(
     Math.min(
       10,
-      Math.round(
-        -(D * (1 + ccm) * 0.009 - 0.036 * C) / (-6.48 * Math.pow(10, -4)),
-      ),
+      Math.round(-(0.009 * D - 0.036 * C) / (-6.48 * Math.pow(10, -4))),
     ),
     0,
   )
 }
 
 const calculateF = (x: number, mathValues?: typeof defaultMathValues) => {
-  const { cd, cd_, cc, cc_, ccm } = mathValues ?? defaultMathValues
-
-  const C = cc_ + (1 + ccm) * (0.07 + cc)
-  const D = 1.36 + cd + cd_
+  const { C, D } = getMathProps(mathValues)
 
   return (
     -3.24 * Math.pow(10, -4) * Math.pow(x, 2)
-    + (D * (1 + ccm) * 0.009 - 0.036 * C) * x
-    + cd
+    + (D * 0.009 - 0.036 * C) * x
+    + C * D
     + 1
   )
 }
@@ -123,7 +125,7 @@ const calculateF_ = (x: number, mathValues?: typeof defaultMathValues) => {
   const C = cc_ + (1 + ccm) * (0.07 + cc)
   const D = 1.36 + cd + cd_
 
-  return -6.48 * Math.pow(10, -4) * x + (D * (1 + ccm) * 0.009 - 0.036 * C)
+  return -6.48 * Math.pow(10, -4) * x + D * 0.009 - 0.036 * C
 }
 
 const CalculateButton: React.FC = () => {
@@ -134,7 +136,7 @@ const CalculateButton: React.FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full">Tính</Button>
+        <Button className="w-full">Tìm</Button>
       </DialogTrigger>
       <DialogContent>
         <div className="">
@@ -196,7 +198,10 @@ const HomePage: NextPage = () => {
       <main className="flex h-dvh w-dvw items-center justify-center">
         <Card className="m-10 h-fit w-full max-w-md">
           <CardHeader>
-            <CardTitle>Nhập số liệu</CardTitle>
+            <CardTitle className="flex items-end justify-between gap-2">
+              Tìm bảng ngọc Chí mạng
+            </CardTitle>
+            <CardDescription>1.3.0</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-y-4">
             <InputField
