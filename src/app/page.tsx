@@ -3,7 +3,7 @@
 import { Label } from "@radix-ui/react-label"
 import type { NextPage } from "next"
 import { list } from "radash"
-import { createContext, useContext, useId, useState } from "react"
+import React, { createContext, useContext, useId, useState } from "react"
 import { Button } from "src/libs/components/ui/button"
 import {
   Card,
@@ -82,6 +82,7 @@ const InputField: React.FC<{
         }}
         className="w-[12ch] md:w-[20ch]"
         type="number"
+        value={mathState?.[0][variable] ?? 0}
       ></Input>
     </div>
   )
@@ -97,7 +98,7 @@ const getMathProps = (mathValues?: typeof defaultMathValues) => {
 }
 
 const calculateResult = (mathValues?: typeof defaultMathValues) => {
-  const { C, D, ccm } = getMathProps(mathValues)
+  const { C, D } = getMathProps(mathValues)
 
   return Math.max(
     Math.min(
@@ -120,12 +121,26 @@ const calculateF = (x: number, mathValues?: typeof defaultMathValues) => {
 }
 
 const calculateF_ = (x: number, mathValues?: typeof defaultMathValues) => {
-  const { cd, cd_, cc, cc_, ccm } = mathValues ?? defaultMathValues
-
-  const C = cc_ + (1 + ccm) * (0.07 + cc)
-  const D = 1.36 + cd + cd_
+  const { C, D } = getMathProps(mathValues)
 
   return -6.48 * Math.pow(10, -4) * x + D * 0.009 - 0.036 * C
+}
+
+const ResetButton: React.FC = () => {
+  const mathState = useContext(MathContext)
+
+  return (
+    <Button
+      onClick={() => {
+        if (!mathState) return
+        mathState[1](defaultMathValues)
+      }}
+      variant={"secondary"}
+      className="flex-1"
+    >
+      Reset
+    </Button>
+  )
 }
 
 const CalculateButton: React.FC = () => {
@@ -136,7 +151,7 @@ const CalculateButton: React.FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full">Tìm</Button>
+        <Button className="flex-1">Tìm</Button>
       </DialogTrigger>
       <DialogContent>
         <div className="">
@@ -201,7 +216,7 @@ const HomePage: NextPage = () => {
             <CardTitle className="flex items-end justify-between gap-2">
               Tìm bảng ngọc Chí mạng
             </CardTitle>
-            <CardDescription>1.3.0</CardDescription>
+            <CardDescription>1.3.1</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-y-4">
             <InputField
@@ -244,7 +259,8 @@ const HomePage: NextPage = () => {
               variable="ccm"
             />
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex w-full gap-4">
+            <ResetButton />
             <CalculateButton />
           </CardFooter>
         </Card>
