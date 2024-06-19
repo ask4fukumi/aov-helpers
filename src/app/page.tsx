@@ -80,8 +80,9 @@ const InputField: React.FC<{
             [variable]: e.target.valueAsNumber,
           }))
         }}
-        className="w-[12ch] md:w-[20ch]"
+        className="w-[12ch] tabular-nums md:w-[20ch]"
         type="number"
+        inputMode="decimal"
         value={mathState?.[0][variable] ?? 0}
       ></Input>
     </div>
@@ -135,10 +136,10 @@ const ResetButton: React.FC = () => {
         if (!mathState) return
         mathState[1](defaultMathValues)
       }}
-      variant={"secondary"}
+      variant="secondary"
       className="flex-1"
     >
-      Reset
+      Đặt lại
     </Button>
   )
 }
@@ -216,7 +217,7 @@ const HomePage: NextPage = () => {
             <CardTitle className="flex items-end justify-between gap-2">
               Tìm bảng ngọc Chí mạng
             </CardTitle>
-            <CardDescription>1.3.1</CardDescription>
+            <CardDescription>1.3.2</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-y-4">
             <InputField
