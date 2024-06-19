@@ -27,7 +27,7 @@
     },
     {
       "type": "shell",
-      "command": "ngrok http 3000",
+      "command": "ngrok http --domain=ape-valued-deeply.ngrok-free.app 3000",
       "label": "ngrok: http",
       "detail": "Ngrok http tunnel",
       "problemMatcher": []
