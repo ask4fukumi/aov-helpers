@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: "",
   metadataBase: new URL(getBaseURL()),
   twitter: {
-    images: "/favicon.icoo",
+    images: "/favicon.ico",
   },
 }
 
