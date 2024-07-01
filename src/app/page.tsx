@@ -19,8 +19,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
 import { useContext } from "react"
+import { useServerAction } from "zsa-react"
 import { CritArcanaContext, CritArcanaProvider } from "./CritArcanaCtx"
 import ExecuteButton from "./ExecuteButton"
+import calculateCritArcana from "./calculateAction"
 import calculateActionSchema from "./calculateActionSchema"
 
 type CalculateActionValues = z.infer<typeof calculateActionSchema>
@@ -36,12 +38,20 @@ const defaultValues: CalculateActionValues = {
 const HomePage: NextPage = () => {
   const { setCritArcana } = useContext(CritArcanaContext)
 
+  const { error, isPending, data, execute }
+    = useServerAction(calculateCritArcana)
+
   const form = useForm<CalculateActionValues>({
     resolver: zodResolver(calculateActionSchema),
     defaultValues,
   })
 
-  const onSubmit = form.handleSubmit((data) => setCritArcana(data))
+  const onSubmit = form.handleSubmit(async (data) => {
+    console.log(data)
+    console.log(typeof setCritArcana)
+    setCritArcana(data)
+    await execute(data)
+  })
 
   const inputFieldsInfos: Omit<DecimalInputFieldProps, "control">[] = [
     { label: "Tỉ lệ Chí mạng (trang bị)", name: "cc" },
@@ -64,8 +74,9 @@ const HomePage: NextPage = () => {
         <Form {...form}>
           <form onSubmit={onSubmit}>
             <CardHeader>
-              <CardTitle className="flex items-end justify-between gap-2">
-                Tìm bảng ngọc Chí mạng v1.4.0
+              <CardTitle className="flex items-end justify-start gap-4">
+                Tìm bảng ngọc Chí mạng
+                <CardDescription>2.1.1</CardDescription>
               </CardTitle>
               <CardDescription>Đơn vị %</CardDescription>
             </CardHeader>
@@ -82,7 +93,7 @@ const HomePage: NextPage = () => {
               >
                 Đặt lại
               </Button>
-              <ExecuteButton />
+              <ExecuteButton data={data} isPending={isPending} error={error} />
             </CardFooter>
           </form>
         </Form>

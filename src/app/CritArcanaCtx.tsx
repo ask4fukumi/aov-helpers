@@ -19,9 +19,10 @@ type CritArcanaState = {
   setCritArcana: React.Dispatch<React.SetStateAction<CalculateActionValues>>
 }
 
-export const CritArcanaContext = createContext<CritArcanaState>(
-  {} as CritArcanaState,
-)
+export const CritArcanaContext = createContext<CritArcanaState>({
+  critArcana: defaultValues,
+  setCritArcana: () => {},
+} as CritArcanaState)
 
 export const CritArcanaProvider: React.FC<React.PropsWithChildren> = ({
   children,
