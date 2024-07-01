@@ -47,8 +47,6 @@ const HomePage: NextPage = () => {
   })
 
   const onSubmit = form.handleSubmit(async (data) => {
-    console.log(data)
-    console.log(typeof setCritArcana)
     setCritArcana(data)
     await execute(data)
   })
