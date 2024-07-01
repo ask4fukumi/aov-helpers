@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 
+import getBaseURL from "src/libs/functions/getBaseURL"
+
 import ThemeMenu from "./ThemeMenu"
 import ThemeProvider from "./ThemeProvider"
 
@@ -11,9 +13,14 @@ const inter = Fira_Sans({
   subsets: ["latin"],
 })
 
+console.log("getBaseURL", getBaseURL())
 export const metadata: Metadata = {
   title: "Arena Of Valor helpers",
   description: "",
+  metadataBase: new URL(getBaseURL()),
+  twitter: {
+    images: "/favicon.ico",
+  },
 }
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {

@@ -23,21 +23,22 @@ const defaultValues: CalculateActionValues = {
   ccm: 0,
 }
 
-const ExecuteButton: React.FC = () => {
-  const { critArcana: critArcanaState } = useContext(CritArcanaContext)
+type ExecuteButtonProps = Pick<
+  ReturnType<typeof useServerAction<typeof calculateCritArcana>>,
+  "error" | "isPending" | "data"
+>
 
-  const {
-    error,
-    isPending,
-    data: critArcana,
-    execute,
-  } = useServerAction(calculateCritArcana)
+const ExecuteButton: React.FC<ExecuteButtonProps> = ({
+  error,
+  isPending,
+  data: critArcana,
+}) => {
+  const { critArcana: critArcanaState } = useContext(CritArcanaContext)
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          onClick={async () => await execute(critArcanaState)}
           variant={!!error ? "destructive" : "default"}
           disabled={isPending}
           type="submit"
@@ -76,7 +77,7 @@ const ExecuteButton: React.FC = () => {
           </div>
         </div>
         <ScrollArea className="max-h-[60dvh] w-full">
-          <CritResultTable critArcana={critArcanaState ?? defaultValues} />
+          <CritResultTable critArcana={critArcanaState} />
         </ScrollArea>
       </DialogContent>
     </Dialog>
