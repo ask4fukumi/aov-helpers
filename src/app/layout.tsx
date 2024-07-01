@@ -15,9 +15,6 @@ const inter = Fira_Sans({
 
 const baseURL = getBaseURL()
 
-console.log("> getBaseURL", getBaseURL())
-console.log("> ENV", process.env)
-
 export const metadata: Metadata = {
   title: "Arena Of Valor helpers",
   description: "",
