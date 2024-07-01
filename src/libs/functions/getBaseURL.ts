@@ -7,7 +7,10 @@ const getBaseURL = function () {
     && process.env.VERCEL_ENV === "production"
   )
     return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  else return `http://localhost:${process.env.PORT}`
+  else return "http://localhost:3000"
 }
+
+console.log("> getBaseURL", getBaseURL())
+console.log("> ENV", process.env)
 
 export default getBaseURL
