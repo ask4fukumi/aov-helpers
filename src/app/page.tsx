@@ -1,9 +1,8 @@
 "use client"
 
-import { Label } from "@radix-ui/react-label"
 import type { NextPage } from "next"
-import { list } from "radash"
-import React, { createContext, useContext, useId, useState } from "react"
+import type { z } from "zod"
+
 import { Button } from "src/libs/components/ui/button"
 import {
   Card,
@@ -13,24 +12,20 @@ import {
   CardHeader,
   CardTitle,
 } from "src/libs/components/ui/card"
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "src/libs/components/ui/dialog"
-import { Input } from "src/libs/components/ui/input"
-import { ScrollArea } from "src/libs/components/ui/scroll-area"
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "src/libs/components/ui/table"
+import { Form } from "src/libs/components/ui/form"
+import { DecimalInputField, DecimalInputFieldProps } from "./decimal-input"
 
-const defaultMathValues = {
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+
+import { useContext } from "react"
+import { CritArcanaContext, CritArcanaProvider } from "./CritArcanaCtx"
+import ExecuteButton from "./ExecuteButton"
+import calculateActionSchema from "./calculateActionSchema"
+
+type CalculateActionValues = z.infer<typeof calculateActionSchema>
+
+const defaultValues: CalculateActionValues = {
   cd: 0,
   cd_: 0,
   cc: 0,
@@ -38,235 +33,61 @@ const defaultMathValues = {
   ccm: 0,
 }
 
-type UseState<S> = [S, React.Dispatch<React.SetStateAction<S>>]
-
-const MathContext = createContext<UseState<typeof defaultMathValues> | null>(
-  null,
-)
-
-const MathProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const mathState = useState(defaultMathValues)
-
-  return (
-    <MathContext.Provider value={mathState}>{children}</MathContext.Provider>
-  )
-}
-
-const InputField: React.FC<{
-  label: {
-    title: string
-    description?: React.ReactNode
-  }
-
-  variable: keyof typeof defaultMathValues
-}> = ({ label, variable }) => {
-  const id = useId()
-  const mathState = useContext(MathContext)
-
-  return (
-    <div className="flex items-start justify-between">
-      <Label className="flex flex-col" htmlFor={id}>
-        <div>{label.title}</div>
-        {!!label.description && (
-          <div className="text-sm text-zinc-500">{label.description}</div>
-        )}
-      </Label>
-      <Input
-        id={id}
-        onChange={(e) => {
-          if (!mathState) return
-          mathState[1]((prev) => ({
-            ...prev,
-            [variable]: e.target.valueAsNumber,
-          }))
-        }}
-        className="w-[12ch] tabular-nums md:w-[20ch]"
-        type="number"
-        inputMode="decimal"
-        value={mathState?.[0][variable] ?? 0}
-      ></Input>
-    </div>
-  )
-}
-
-const getMathProps = (mathValues?: typeof defaultMathValues) => {
-  const { cd, cd_, cc, cc_, ccm } = mathValues ?? defaultMathValues
-
-  const C = cc_ + (1 + ccm) * cc + 0.07
-  const D = 1.36 + cd + cd_
-
-  return { C, D, cd, cd_, cc, cc_, ccm }
-}
-
-const calculateResult = (mathValues?: typeof defaultMathValues) => {
-  const { C, D } = getMathProps(mathValues)
-
-  return Math.max(
-    Math.min(
-      10,
-      Math.round(-(0.009 * D - 0.036 * C) / (-6.48 * Math.pow(10, -4))),
-    ),
-    0,
-  )
-}
-
-const calculateF = (x: number, mathValues?: typeof defaultMathValues) => {
-  const { C, D } = getMathProps(mathValues)
-
-  return (
-    -3.24 * Math.pow(10, -4) * Math.pow(x, 2)
-    + (D * 0.009 - 0.036 * C) * x
-    + C * D
-    + 1
-  )
-}
-
-const calculateF_ = (x: number, mathValues?: typeof defaultMathValues) => {
-  const { C, D } = getMathProps(mathValues)
-
-  return -6.48 * Math.pow(10, -4) * x + D * 0.009 - 0.036 * C
-}
-
-const ResetButton: React.FC = () => {
-  const mathState = useContext(MathContext)
-
-  return (
-    <Button
-      onClick={() => {
-        if (!mathState) return
-        mathState[1](defaultMathValues)
-      }}
-      variant="secondary"
-      className="flex-1"
-    >
-      Đặt lại
-    </Button>
-  )
-}
-
-const CalculateButton: React.FC = () => {
-  const mathState = useContext(MathContext)
-
-  const x = calculateResult(mathState?.[0])
-
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="flex-1">Tìm</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <div className="">
-          <div className="mb-1">
-            Bạn cần{" "}
-            <span className="inline-flex w-[3ch] justify-center text-lg font-bold tabular-nums">
-              {10 - x}
-            </span>
-            {" viên "}
-            <span className="underline">Sát thương Chí mạng</span>
-          </div>
-          <div className="">
-            Bạn cần{" "}
-            <span className="inline-flex w-[3ch] justify-center text-lg font-bold tabular-nums">
-              {x}
-            </span>
-            {" viên "}
-            <span className="underline">Tỉ lệ Chí mạng</span>
-          </div>
-        </div>
-        <ScrollArea className="max-h-[60dvh] w-full">
-          <Table>
-            <TableCaption className="px-4 text-left">
-              x là số viên ngọc Tỉ lệ Chí mạng.
-              <br />f là khả năng gây sát thương (càng cao càng tốt).
-              <br />
-              {"f' là đạo hàm của f (f là một hàm parabol)."}
-            </TableCaption>
-            <TableHeader className="border-red sticky top-0 bg-background">
-              <TableRow className="">
-                <TableHead>x</TableHead>
-                <TableHead>f</TableHead>
-                <TableHead>{"f'"}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {list(0, 10).map((i) => (
-                <TableRow key={i}>
-                  <TableCell>{i}</TableCell>
-                  <TableCell>
-                    {calculateF(i, mathState?.[0]).toFixed(7)}
-                  </TableCell>
-                  <TableCell>
-                    {calculateF_(i, mathState?.[0]).toFixed(7)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </ScrollArea>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
 const HomePage: NextPage = () => {
+  const { setCritArcana } = useContext(CritArcanaContext)
+
+  const form = useForm<CalculateActionValues>({
+    resolver: zodResolver(calculateActionSchema),
+    defaultValues,
+  })
+
+  const onSubmit = form.handleSubmit((data) => setCritArcana(data))
+
+  const inputFieldsInfos: Omit<DecimalInputFieldProps, "control">[] = [
+    { label: "Tỉ lệ Chí mạng (trang bị)", name: "cc" },
+    { label: "Tỉ lệ Chí mạng (nội tại)", name: "cc_" },
+    { label: "Sát thương Chí mạng (trang bị)", name: "cd" },
+    { label: "Sát thương Chí mạng (nội tại)", name: "cd_" },
+    { label: "Số nhân Tỉ lệ Chí mạng (phù hiệu)", name: "ccm" },
+  ]
+
+  const inputFieldsProps: DecimalInputFieldProps[] = inputFieldsInfos.map(
+    (entry) => ({
+      ...entry,
+      control: form.control,
+    }),
+  )
+
   return (
-    <MathProvider>
-      <main className="flex h-dvh w-dvw items-center justify-center">
-        <Card className="m-10 h-fit w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="flex items-end justify-between gap-2">
-              Tìm bảng ngọc Chí mạng
-            </CardTitle>
-            <CardDescription>1.3.2</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-y-4">
-            <InputField
-              label={{
-                title: "Tỉ lệ chí mạng",
-                description: "Có được từ trang bị",
-              }}
-              variable="cc"
-            />
-            <InputField
-              label={{
-                title: "Tỉ lệ chí mạng",
-                description: "Có được từ nội tại",
-              }}
-              variable="cc_"
-            />
-            <InputField
-              label={{
-                title: "Sát thương chí mạng",
-                description: "Có được từ trang bị",
-              }}
-              variable="cd"
-            />
-            <InputField
-              label={{
-                title: "Sát thương chí mạng",
-                description: "Có được từ nội tại",
-              }}
-              variable="cd_"
-            />
-            <InputField
-              label={{
-                title: "Số nhân TLCM",
-                description: (
-                  <span>
-                    Có được từ phù hiệu <br /> (0 hoặc 0.16)
-                  </span>
-                ),
-              }}
-              variable="ccm"
-            />
-          </CardContent>
-          <CardFooter className="flex w-full gap-4">
-            <ResetButton />
-            <CalculateButton />
-          </CardFooter>
-        </Card>
-      </main>
-    </MathProvider>
+    <CritArcanaProvider>
+      <Card className="m-10 h-fit w-full max-w-md">
+        <Form {...form}>
+          <form onSubmit={onSubmit}>
+            <CardHeader>
+              <CardTitle className="flex items-end justify-between gap-2">
+                Tìm bảng ngọc Chí mạng v1.4.0
+              </CardTitle>
+              <CardDescription>Đơn vị %</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-y-4">
+              {inputFieldsProps.map((props) => (
+                <DecimalInputField key={props.name} {...props} />
+              ))}
+            </CardContent>
+            <CardFooter className="flex w-full gap-4">
+              <Button
+                onClick={() => form.reset()}
+                variant="secondary"
+                className="flex-1"
+              >
+                Đặt lại
+              </Button>
+              <ExecuteButton />
+            </CardFooter>
+          </form>
+        </Form>
+      </Card>
+    </CritArcanaProvider>
   )
 }
 

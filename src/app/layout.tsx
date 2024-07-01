@@ -1,9 +1,15 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
 
+import ThemeMenu from "./ThemeMenu"
+import ThemeProvider from "./ThemeProvider"
+
+import { Fira_Sans } from "next/font/google"
 import "./_site/globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Fira_Sans({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+})
 
 export const metadata: Metadata = {
   title: "Arena Of Valor helpers",
@@ -12,8 +18,20 @@ export const metadata: Metadata = {
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <html lang="vi">
-      <body className={`dark h-dvh ${inter.className}`}>{children}</body>
+    <html lang="vi" suppressHydrationWarning>
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main className="flex h-dvh w-dvw items-center justify-center">
+            {children}
+            <ThemeMenu />
+          </main>
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
