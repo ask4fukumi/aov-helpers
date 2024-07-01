@@ -10,7 +10,4 @@ const getBaseURL = function () {
   else return "http://localhost:3000"
 }
 
-console.log("> getBaseURL", getBaseURL())
-console.log("> ENV", process.env)
-
 export default getBaseURL
