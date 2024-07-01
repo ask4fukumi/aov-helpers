@@ -77,7 +77,7 @@ const ExecuteButton: React.FC<ExecuteButtonProps> = ({
           </div>
         </div>
         <ScrollArea className="max-h-[60dvh] w-full">
-          <CritResultTable critArcana={critArcanaState ?? defaultValues} />
+          <CritResultTable critArcana={critArcanaState} />
         </ScrollArea>
       </DialogContent>
     </Dialog>
