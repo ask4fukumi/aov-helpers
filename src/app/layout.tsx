@@ -13,13 +13,18 @@ const inter = Fira_Sans({
   subsets: ["latin"],
 })
 
-console.log("getBaseURL", getBaseURL())
+const baseURL = getBaseURL()
+
 export const metadata: Metadata = {
   title: "Arena Of Valor helpers",
   description: "",
-  metadataBase: new URL(getBaseURL()),
+  metadataBase: new URL(baseURL),
+  icons: {
+    icon: new URL("/favicon.ico", baseURL),
+    apple: new URL("/favicon.ico", baseURL),
+  },
   twitter: {
-    images: "/favicon.ico",
+    images: new URL("/favicon.ico", baseURL),
   },
 }
 
