@@ -34,7 +34,7 @@ const CritResultTable: React.FC<{
           <br />
           {"f' là đạo hàm của f (f là một hàm parabol)."}
         </TableCaption>
-        <TableHeader className="border-red sticky top-[-1px] bg-background">
+        <TableHeader className="sticky top-0 bg-background">
           <TableRow className="">
             <TableHead className="w-[20%]">10 - x</TableHead>
             <TableHead className="w-[20%]">x</TableHead>

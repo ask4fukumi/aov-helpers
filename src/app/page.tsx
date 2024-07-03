@@ -73,7 +73,7 @@ const TheCard: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-end justify-start gap-4">
               Tìm bảng ngọc Chí mạng
-              <CardDescription>2.2.0</CardDescription>
+              <CardDescription>2.2.1</CardDescription>
             </CardTitle>
             <CardDescription>Đơn vị %</CardDescription>
           </CardHeader>
