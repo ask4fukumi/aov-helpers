@@ -2,9 +2,6 @@ import type { Metadata } from "next"
 
 import getBaseURL from "src/utils/funcs/get-base-url"
 
-import ThemeProvider from "./theme-provider"
-import ThemeSwitcher from "./theme-switcher"
-
 import { Fira_Sans } from "next/font/google"
 import "./globals.css"
 
@@ -32,17 +29,11 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <html lang="vi" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="flex h-dvh w-dvw items-center justify-center">
-            {children}
-            <ThemeSwitcher />
-          </main>
-        </ThemeProvider>
+        <div className="grid-col grid min-h-dvh grid-rows-[auto_1fr_auto]">
+          <header></header>
+          <main className="flex items-center justify-center">{children}</main>
+          <footer></footer>
+        </div>
       </body>
     </html>
   )
