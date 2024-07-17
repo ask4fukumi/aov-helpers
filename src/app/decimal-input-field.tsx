@@ -1,6 +1,5 @@
+import type { ComputeVariable as CritArcanaComputeVariable } from "#types/crit-arcana"
 import type { useForm } from "react-hook-form"
-import type { z } from "zod"
-import type calculateActionSchema from "./calculateActionSchema"
 
 import {
   FormControl,
@@ -8,15 +7,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "src/libs/components/ui/form"
-import { Input } from "src/libs/components/ui/input"
-
-type CalculateActionSchema = z.infer<typeof calculateActionSchema>
+} from "#u/components/ui/form"
+import { Input } from "#u/components/ui/input"
 
 export type DecimalInputFieldProps = {
-  control: ReturnType<typeof useForm<CalculateActionSchema>>["control"]
+  control: ReturnType<typeof useForm<CritArcanaComputeVariable>>["control"]
   label: React.ReactNode
-  name: keyof CalculateActionSchema
+  name: keyof CritArcanaComputeVariable
 }
 
 export const DecimalInputField: React.FC<DecimalInputFieldProps> = ({

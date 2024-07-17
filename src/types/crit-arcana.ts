@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-const calculateActionSchema = z.object({
+export const computeVariableSchema = z.object({
   cd: z.coerce.number().min(0, "Không thể nhỏ hơn 0"),
   cd_: z.coerce.number().min(-100, "Không thể nhỏ hơn -100"),
   cc: z.coerce.number().min(0, "Không thể nhỏ hơn 0"),
@@ -10,4 +10,4 @@ const calculateActionSchema = z.object({
     .refine((value) => value == 0 || value == 16, "Chỉ có thể là 0 hoặc 16"),
 })
 
-export default calculateActionSchema
+export type ComputeVariable = z.infer<typeof computeVariableSchema>

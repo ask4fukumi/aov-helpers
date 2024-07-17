@@ -3,15 +3,15 @@
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
 import { useTheme } from "next-themes"
 
-import { Button } from "src/libs/components/ui/button"
+import { Button } from "#u/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "src/libs/components/ui/dropdown-menu"
+} from "#u/components/ui/dropdown-menu"
 
-const ThemeMenu: React.FC = () => {
+const ThemeSwitcher: React.FC = () => {
   const { setTheme } = useTheme()
 
   return (
@@ -38,4 +38,4 @@ const ThemeMenu: React.FC = () => {
   )
 }
 
-export default ThemeMenu
+export default ThemeSwitcher

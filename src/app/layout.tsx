@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 
-import getBaseURL from "src/libs/functions/getBaseURL"
+import getBaseURL from "src/utils/funcs/get-base-url"
 
-import ThemeMenu from "./ThemeMenu"
-import ThemeProvider from "./ThemeProvider"
+import ThemeProvider from "./theme-provider"
+import ThemeSwitcher from "./theme-switcher"
 
 import { Fira_Sans } from "next/font/google"
-import "./_site/globals.css"
+import "./globals.css"
 
 const inter = Fira_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -40,7 +40,7 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         >
           <main className="flex h-dvh w-dvw items-center justify-center">
             {children}
-            <ThemeMenu />
+            <ThemeSwitcher />
           </main>
         </ThemeProvider>
       </body>
