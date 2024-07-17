@@ -27,7 +27,23 @@
         "name": "next"
       }
     ],
-    "paths": {},
+    "paths": {
+      "#types/*": [
+        "./src/types/*"
+      ],
+      "#env": [
+        "./src/utils/env"
+      ],
+      "#db/*": [
+        "./src/database/*"
+      ],
+      "#be/*": [
+        "./src/backend/*"
+      ],
+      "#u/*": [
+        "./src/utils/*"
+      ],
+    },
     "baseUrl": "."
   },
   "include": [

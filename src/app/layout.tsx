@@ -1,12 +1,9 @@
 import type { Metadata } from "next"
 
-import getBaseURL from "src/libs/functions/getBaseURL"
-
-import ThemeMenu from "./ThemeMenu"
-import ThemeProvider from "./ThemeProvider"
+import getBaseURL from "src/utils/funcs/get-base-url"
 
 import { Fira_Sans } from "next/font/google"
-import "./_site/globals.css"
+import "./globals.css"
 
 const inter = Fira_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -32,17 +29,11 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <html lang="vi" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="flex h-dvh w-dvw items-center justify-center">
-            {children}
-            <ThemeMenu />
-          </main>
-        </ThemeProvider>
+        <div className="grid-col grid min-h-dvh grid-rows-[auto_1fr_auto]">
+          <header></header>
+          <main className="flex items-center justify-center">{children}</main>
+          <footer></footer>
+        </div>
       </body>
     </html>
   )

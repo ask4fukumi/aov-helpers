@@ -12,10 +12,10 @@
       "warn",
       "never"
     ],
-    "operator-linebreak": [
-      "warn",
-      "before"
-    ],
+    // "operator-linebreak": [
+    //   "warn",
+    //   "before"
+    // ],
     "quotes": [
       "warn",
       "double"

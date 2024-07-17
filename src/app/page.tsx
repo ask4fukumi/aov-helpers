@@ -1,9 +1,12 @@
 "use client"
 
 import type { NextPage } from "next"
-import type { z } from "zod"
 
-import { Button } from "src/libs/components/ui/button"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useContext } from "react"
+import { useForm } from "react-hook-form"
+
+import { Button } from "#u/components/ui/button"
 import {
   Card,
   CardContent,
@@ -11,52 +14,43 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "src/libs/components/ui/card"
-import { Form } from "src/libs/components/ui/form"
-import { DecimalInputField, DecimalInputFieldProps } from "./decimal-input"
+} from "#u/components/ui/card"
+import { Form } from "#u/components/ui/form"
+import {
+  CritArcanaContext,
+  CritArcanaProvider,
+  defaultCritArcanaComputeVariable,
+} from "./crit-arcana-context"
+import {
+  DecimalInputField,
+  type DecimalInputFieldProps,
+} from "./decimal-input-field"
+import ExecuteButton from "./execute-button"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import {
+  ComputeVariable as CritArcanaComputeVariable,
+  computeVariableSchema as critArcanaComputeVariableSchema,
+} from "#types/crit-arcana"
 
-import React, { useContext } from "react"
-import { useServerAction } from "zsa-react"
-import { CritArcanaContext, CritArcanaProvider } from "./CritArcanaCtx"
-import ExecuteButton from "./ExecuteButton"
-import calculateCritArcana from "./calculateAction"
-import calculateActionSchema from "./calculateActionSchema"
+const ComputeCenter: React.FC = () => {
+  const { setData: setCritArcanaComputeVariable } =
+    useContext(CritArcanaContext)
 
-type CalculateActionValues = z.infer<typeof calculateActionSchema>
-
-const defaultValues: CalculateActionValues = {
-  cd: 0,
-  cd_: 0,
-  cc: 0,
-  cc_: 0,
-  ccm: 0,
-}
-
-const TheCard: React.FC = () => {
-  const { setCritArcana } = useContext(CritArcanaContext)
-
-  const { error, isPending, data, execute }
-    = useServerAction(calculateCritArcana)
-
-  const form = useForm<CalculateActionValues>({
-    resolver: zodResolver(calculateActionSchema),
-    defaultValues,
+  const form = useForm<CritArcanaComputeVariable>({
+    resolver: zodResolver(critArcanaComputeVariableSchema),
+    defaultValues: defaultCritArcanaComputeVariable,
   })
 
-  const onSubmit = form.handleSubmit(async (data) => {
-    setCritArcana(data)
-    await execute(data)
-  })
+  const onSubmit = form.handleSubmit((data) =>
+    setCritArcanaComputeVariable(data),
+  )
 
   const inputFieldsInfos: Omit<DecimalInputFieldProps, "control">[] = [
-    { label: "Tỉ lệ Chí mạng (trang bị)", name: "cc" },
-    { label: "Tỉ lệ Chí mạng (nội tại)", name: "cc_" },
-    { label: "Sát thương Chí mạng (trang bị)", name: "cd" },
-    { label: "Sát thương Chí mạng (nội tại)", name: "cd_" },
-    { label: "Số nhân Tỉ lệ Chí mạng (phù hiệu)", name: "ccm" },
+    { label: "% Tỉ lệ Chí mạng (trang bị)", name: "cc" },
+    { label: "% Tỉ lệ Chí mạng (nội tại)", name: "cc_" },
+    { label: "% Sát thương Chí mạng (trang bị)", name: "cd" },
+    { label: "% Sát thương Chí mạng (nội tại)", name: "cd_" },
+    { label: "% Số nhân Tỉ lệ Chí mạng (phù hiệu)", name: "ccm" },
   ]
 
   const inputFieldsProps: DecimalInputFieldProps[] = inputFieldsInfos.map(
@@ -73,9 +67,8 @@ const TheCard: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-end justify-start gap-4">
               Tìm bảng ngọc Chí mạng
-              <CardDescription>2.2.0</CardDescription>
             </CardTitle>
-            <CardDescription>Đơn vị %</CardDescription>
+            <CardDescription>2.3.0</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-y-4">
             {inputFieldsProps.map((props) => (
@@ -90,7 +83,7 @@ const TheCard: React.FC = () => {
             >
               Đặt lại
             </Button>
-            <ExecuteButton data={data} isPending={isPending} error={error} />
+            <ExecuteButton />
           </CardFooter>
         </form>
       </Form>
@@ -101,7 +94,7 @@ const TheCard: React.FC = () => {
 const HomePage: NextPage = () => {
   return (
     <CritArcanaProvider>
-      <TheCard />{" "}
+      <ComputeCenter />
     </CritArcanaProvider>
   )
 }
