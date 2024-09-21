@@ -1,4 +1,4 @@
-import type { ComputeVariable as CritArcanaComputeVariable } from "#types/crit-arcana"
+import type { ComputeVariable as CritArcanaComputeVariable } from "#types/crit_arcana"
 import type { useForm } from "react-hook-form"
 
 import {

@@ -20,21 +20,21 @@ import {
   CritArcanaContext,
   CritArcanaProvider,
   defaultCritArcanaComputeVariable,
-} from "./crit-arcana-context"
+} from "./crit_arcana_context"
 import {
   DecimalInputField,
   type DecimalInputFieldProps,
-} from "./decimal-input-field"
-import ExecuteButton from "./execute-button"
+} from "./decimal_input_field"
+import ExecuteButton from "./execute_button"
 
 import {
   ComputeVariable as CritArcanaComputeVariable,
   computeVariableSchema as critArcanaComputeVariableSchema,
-} from "#types/crit-arcana"
+} from "#types/crit_arcana"
 
 const ComputeCenter: React.FC = () => {
-  const { setData: setCritArcanaComputeVariable } =
-    useContext(CritArcanaContext)
+  const { setData: setCritArcanaComputeVariable }
+    = useContext(CritArcanaContext)
 
   const form = useForm<CritArcanaComputeVariable>({
     resolver: zodResolver(critArcanaComputeVariableSchema),

@@ -1,4 +1,4 @@
-import type { ComputeVariable } from "#types/crit-arcana"
+import type { ComputeVariable } from "#types/crit_arcana"
 
 import { clamp } from "#u/funcs"
 import { list } from "radash"
@@ -14,13 +14,11 @@ const getRefinedVariable = (input: ComputeVariable) => ({
 const getComputedVariable = (input: ComputeVariable) => ({
   D: 1.36 + input.cd + input.cd_,
   C: input.cc_ + (1 + input.ccm) * input.cc + 0.07,
-  ...input,
 })
 
 const getRequiredVariable = (input: ComputeVariable) => {
   const refinedVariable = getRefinedVariable(input)
-  const { D, C } = getComputedVariable(refinedVariable)
-  return { ...refinedVariable, D, C }
+  return getComputedVariable(refinedVariable)
 }
 
 export const getCritArcanaResult = (input: ComputeVariable) => {

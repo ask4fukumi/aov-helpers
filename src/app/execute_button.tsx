@@ -3,10 +3,10 @@
 import {
   getCritArcanaResult,
   getCritArcanaResultTable,
-} from "#be/logic/crit-arcana"
+} from "#be/logic/crit_arcana"
 import { Button } from "#u/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "#u/components/ui/dialog"
-import { ScrollArea } from "#u/components/ui/scroll-area"
+import { ScrollArea } from "#u/components/ui/scroll_area"
 import {
   Table,
   TableBody,
@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "#u/components/ui/table"
 import { useContext } from "react"
-import { CritArcanaContext } from "./crit-arcana-context"
+import { CritArcanaContext } from "./crit_arcana_context"
 
 const ExecuteButton: React.FC = () => {
   const { data: critArcanaVariable } = useContext(CritArcanaContext)

@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 
-import getBaseURL from "src/utils/funcs/get-base-url"
+import getBaseURL from "#u/funcs/get_base_url"
 
 import { Fira_Sans } from "next/font/google"
 import "./globals.css"
