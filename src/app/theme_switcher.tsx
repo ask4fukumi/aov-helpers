@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "#u/components/ui/dropdown-menu"
+} from "#u/components/ui/dropdown_menu"
 
 const ThemeSwitcher: React.FC = () => {
   const { setTheme } = useTheme()

@@ -1,6 +1,6 @@
-import type { ComputeVariable as CritArcanaComputeVariable } from "src/types/crit-arcana"
+import type { ComputeVariable as CritArcanaComputeVariable } from "#types/crit_arcana"
 
-import createStateContext from "#u/hooks/create-state-context"
+import createStateContext from "#u/hooks/create_state_context"
 
 export const defaultCritArcanaComputeVariable: CritArcanaComputeVariable = {
   cc: 0,
